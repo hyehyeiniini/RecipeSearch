@@ -28,6 +28,7 @@ final class ForYouViewController: UIViewController {
         view.dataSource = self
         
         view.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: MyCollectionViewCell.cellIdentifier)
+        view.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: EmptyCollectionViewCell.cellIdentifier)
         view.register(MyCollectionReusableView.self, forSupplementaryViewOfKind: "Header", withReuseIdentifier: MyCollectionReusableView.headerIdentifier)
         view.register(DividerFooterView.self, forSupplementaryViewOfKind: "Footer", withReuseIdentifier: DividerFooterView.footerIdentifier)
         
@@ -62,12 +63,11 @@ final class ForYouViewController: UIViewController {
     func setupUI() {
         view.backgroundColor = .backgroundColor
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
-        
     }
     
     func setupData1() {
         myPicksArray = coreDataManager.coreDataToCustomData()
-        dump(myPicksArray)
+        // dump(myPicksArray)
         DispatchQueue.main.async {
             self.collectionView.reloadSections(IndexSet(integer: 0))
         }
@@ -125,7 +125,7 @@ extension ForYouViewController : UICollectionViewDelegate,UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0 :
-            return myPicksArray.count // 임시값
+            return myPicksArray.count > 0 ? myPicksArray.count : 1 // 임시값
         case 1 :
             return recipesArray.count
         default:
@@ -143,9 +143,16 @@ extension ForYouViewController : UICollectionViewDelegate,UICollectionViewDataSo
         // print(#function)
         switch indexPath.section {
         case 0 :
+            // Empty View
+            if myPicksArray.count == 0 {
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmptyCollectionViewCell.cellIdentifier, for: indexPath) as? EmptyCollectionViewCell else {fatalError("Unable deque cell...")}
+                return cell
+            }
+            
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.cellIdentifier, for: indexPath) as? MyCollectionViewCell else {fatalError("Unable deque cell...")}
             cell.imageUrl = myPicksArray[indexPath.row].imageUrl
             return cell
+            
         default:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.cellIdentifier, for: indexPath) as? MyCollectionViewCell else {fatalError("Unable deque cell...")}
             cell.imageUrl = recipesArray[indexPath.row].imageUrl
@@ -177,12 +184,14 @@ extension ForYouViewController : UICollectionViewDelegate,UICollectionViewDataSo
         let detailVC = DetailViewController()
         switch indexPath.section {
         case 0:
+            if myPicksArray.count == 0 { return }
             detailVC.recipes = myPicksArray[indexPath.row]
         default:
             detailVC.recipes = recipesArray[indexPath.row]
         }
         navigationController?.pushViewController(detailVC, animated: true)
     }
+    
 }
 
 
@@ -191,11 +200,16 @@ extension ForYouViewController {
         let layout = UICollectionViewCompositionalLayout {sectionIndex,enviroment in
             switch sectionIndex {
             case 0 :
+                // Empty View
+                if self.myPicksArray.count == 0 {
+                    return AppLayouts.shared.recentlyRegisteredCarouselView()
+                }
                 return AppLayouts.shared.myPicksCarouselView()
             default:
                 return AppLayouts.shared.recentlyRegisteredCarouselView()
             }
         }
+        print("flag")
         collectionView.setCollectionViewLayout(layout, animated: true)
     }
 }

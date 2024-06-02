@@ -23,6 +23,11 @@ class AppLayouts {
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
         section.orthogonalScrollingBehavior = .groupPaging
         
+        // background 이미지
+//        let sectionBackground = NSCollectionLayoutDecorationItem.background(
+//                            elementKind: "background-element-kind")
+//        section.decorationItems = [sectionBackground]
+       
         section.boundarySupplementaryItems = [
             .init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(30)), elementKind: "Header", alignment: .top),
             .init(layoutSize: .init(widthDimension: .fractionalWidth(1), heightDimension: .absolute(30)), elementKind: "Footer", alignment: .bottom)

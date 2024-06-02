@@ -16,17 +16,13 @@ class DetailViewController: UIViewController {
     var recipes: Recipes?
     
     var bookMarked = false
-    
-    // 네비게이션바에 넣기 위한 버튼
-    private lazy var bookMarksButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(bookMarksButtonTapped))
-        return button
-    }()
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setBookmarkFlag()
         setupNavigationBar()
+        updateRightBarButton(bookMarked: bookMarked)
         setupTableView()
     }
     
@@ -34,12 +30,38 @@ class DetailViewController: UIViewController {
         view.backgroundColor = .backgroundColor
     }
     
+    func setBookmarkFlag() {
+        guard let recipeName = recipes?.recipeName else { return }
+        if coreDataManager.contains(data: recipeName) {
+            bookMarked = true
+        } else {
+            bookMarked = false
+        }
+    }
+    
     func setupNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = recipes?.recipeName
-        navigationItem.rightBarButtonItem = bookMarksButton
+        // navigationItem.rightBarButtonItem = bookMarksButton
         
         self.navigationController?.navigationBar.tintColor = .pointColor        
+    }
+    
+    func updateRightBarButton(bookMarked: Bool) {
+        let button = UIButton(frame: CGRectMake(0,0,30,30))
+        button.addTarget(self, action: #selector(bookMarksButtonTapped), for: .touchUpInside)
+
+        switch bookMarked {
+        case true:
+            print("추가된 레시피👍")
+            button.setImage(UIImage(systemName: "book.fill"), for: .normal)
+        default:
+            print("추가되지 않음")
+            button.setImage(UIImage(systemName: "book"), for: .normal)
+        }
+        let rightButton = UIBarButtonItem(customView: button)
+        // navigationItem.rightBarButtonItem = rightButton
+        navigationItem.setRightBarButton(rightButton, animated: true)
     }
     
     func setupTableView() {
@@ -91,15 +113,21 @@ class DetailViewController: UIViewController {
         }
     }
     
+
+    
     @objc func bookMarksButtonTapped() {
         print(#function)
         if !bookMarked {
             coreDataManager.saveData(recipe: recipes!) {
                 print("코어데이터 저장")
             }
-            bookMarked.toggle()
+        } else {
+            coreDataManager.deleteRecipeData(data: recipes!.recipeName) {
+                print("코어데이터 지우기")
+            }
         }
-
+        bookMarked.toggle()
+        updateRightBarButton(bookMarked: bookMarked)
     }
 }
 
