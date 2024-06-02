@@ -15,14 +15,17 @@ class DetailViewController: UIViewController {
     
     var recipes: Recipes?
     
-    var bookMarked = false
+    var bookMarked: Bool = false {
+        didSet {
+            updateRightBarButton(bookMarked: bookMarked)
+        }
+    }
         
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setBookmarkFlag()
         setupNavigationBar()
-        updateRightBarButton(bookMarked: bookMarked)
         setupTableView()
     }
     
@@ -30,21 +33,17 @@ class DetailViewController: UIViewController {
         view.backgroundColor = .backgroundColor
     }
     
-    func setBookmarkFlag() {
-        guard let recipeName = recipes?.recipeName else { return }
-        if coreDataManager.contains(data: recipeName) {
-            bookMarked = true
-        } else {
-            bookMarked = false
-        }
-    }
-    
     func setupNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = recipes?.recipeName
-        // navigationItem.rightBarButtonItem = bookMarksButton
+        self.navigationController?.navigationBar.tintColor = .pointColor      
         
-        self.navigationController?.navigationBar.tintColor = .pointColor        
+        setBookmarkFlag()
+    }
+    
+    func setBookmarkFlag() {
+        guard let recipeName = recipes?.recipeName else { return }
+        bookMarked = coreDataManager.contains(data: recipeName)
     }
     
     func updateRightBarButton(bookMarked: Bool) {
@@ -60,7 +59,6 @@ class DetailViewController: UIViewController {
             button.setImage(UIImage(systemName: "book"), for: .normal)
         }
         let rightButton = UIBarButtonItem(customView: button)
-        // navigationItem.rightBarButtonItem = rightButton
         navigationItem.setRightBarButton(rightButton, animated: true)
     }
     
@@ -103,17 +101,12 @@ class DetailViewController: UIViewController {
         ])
         
         // ⭐️ 이미지 navigation bar 위로?
-        if #available(iOS 11.0, *)
-        {
+        if #available(iOS 11.0, *) {
             self.tableView.contentInsetAdjustmentBehavior = UIScrollView.ContentInsetAdjustmentBehavior.never;
-        }
-        else
-        {
+        } else {
             self.automaticallyAdjustsScrollViewInsets = false
         }
     }
-    
-
     
     @objc func bookMarksButtonTapped() {
         print(#function)
@@ -127,7 +120,6 @@ class DetailViewController: UIViewController {
             }
         }
         bookMarked.toggle()
-        updateRightBarButton(bookMarked: bookMarked)
     }
 }
 
@@ -189,7 +181,7 @@ extension DetailViewController: UITableViewDataSource {
 
 }
 
-
+// 테이블 뷰 셀 동적으로 높이 할당
 extension DetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension

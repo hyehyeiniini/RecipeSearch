@@ -10,47 +10,43 @@ import UIKit
 final class ForYouViewController: UIViewController {
     
     var networkManager = NetworkManager.shared
-    
     var coreDataManager = CoreDataManager.shared
     
     var myPicksArray: [Recipes] = []
-    
     var recipesArray: [Recipes] = []
     
     lazy var resultsController = SearchResultViewController()
     lazy var searchController = UISearchController(searchResultsController: self.resultsController)
     
     private lazy var collectionView: UICollectionView = {
+        // UI 관련 설정
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout.init())
+        view.backgroundColor = .backgroundColor
         view.translatesAutoresizingMaskIntoConstraints = false
         view.showsVerticalScrollIndicator = true
+        
+        // 델리게이트 설정
         view.delegate = self
         view.dataSource = self
         
+        // 셀 등록
         view.register(MyCollectionViewCell.self, forCellWithReuseIdentifier: MyCollectionViewCell.cellIdentifier)
         view.register(EmptyCollectionViewCell.self, forCellWithReuseIdentifier: EmptyCollectionViewCell.cellIdentifier)
         view.register(MyCollectionReusableView.self, forSupplementaryViewOfKind: "Header", withReuseIdentifier: MyCollectionReusableView.headerIdentifier)
         view.register(DividerFooterView.self, forSupplementaryViewOfKind: "Footer", withReuseIdentifier: DividerFooterView.footerIdentifier)
         
-        //        view.isPagingEnabled = false // <- 한 페이지의 넓이를 조절 할 수 없기 때문에 scrollViewWillEndDragging을 사용하여 구현
-        //        view.contentInsetAdjustmentBehavior = .never // <- 내부적으로 safe area에 의해 가려지는 것을 방지하기 위해서 자동으로 inset조정해 주는 것을 비활성화
-        //        view.contentInset = Const.collectionViewContentInset
-        //        view.decelerationRate = .fast // <- 스크롤이 빠르게 되도록 (페이징 애니메이션같이 보이게하기 위함)
-        
-        view.backgroundColor = .backgroundColor
         return view
     }()
     
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         setupUI()
-
-        // setupData1()
-        setupData2()
         
+        // 서치바 설정
         setupSearchBar()
+        // 컬렉션뷰 설정
+        setupData2()
         setupCollectionView()
         configureCompositionalLayout()
     }
@@ -60,14 +56,33 @@ final class ForYouViewController: UIViewController {
         setupData1()
     }
     
+    // MARK: - UISetup
     func setupUI() {
         view.backgroundColor = .backgroundColor
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
     }
     
+    // MARK: - SearchBar Setup
+    // 서치바 셋팅
+    func setupSearchBar() {
+        navigationItem.searchController = searchController
+        navigationItem.searchController?.searchBar.placeholder = "Search Recipes..."
+        
+        // 🍎 2) 서치(결과)컨트롤러의 사용 (복잡한 구현 가능)
+        //     ==> 글자마다 검색 기능 + 새로운 화면을 보여주는 것도 가능
+        searchController.searchResultsUpdater = self
+
+        searchController.searchBar.autocapitalizationType = .none
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.spellCheckingType = .no
+        
+        resultsController.rootViewController = self
+    }
+    
+    // MARK: - ColletionView Data Setup
     func setupData1() {
         myPicksArray = coreDataManager.coreDataToCustomData()
-        // dump(myPicksArray)
         DispatchQueue.main.async {
             self.collectionView.reloadSections(IndexSet(integer: 0))
         }
@@ -82,24 +97,6 @@ final class ForYouViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    // 서치바 셋팅
-    func setupSearchBar() {
-        navigationItem.searchController = searchController
-        navigationItem.searchController?.searchBar.placeholder = "Search Recipes"
-        
-        // 🍎 2) 서치(결과)컨트롤러의 사용 (복잡한 구현 가능)
-        //     ==> 글자마다 검색 기능 + 새로운 화면을 보여주는 것도 가능
-        searchController.searchResultsUpdater = self
-        //searchController.delegate = self
-
-        searchController.searchBar.autocapitalizationType = .none
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.autocorrectionType = .no
-        searchController.searchBar.spellCheckingType = .no
-        
-        resultsController.rootViewController = self
     }
     
     func setupCollectionView() {
@@ -120,7 +117,7 @@ extension ForYouViewController: UISearchResultsUpdating {
 }
 
 // MARK: - CollectionView
-extension ForYouViewController : UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+extension ForYouViewController : UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     // 각 섹션의 아이템 갯수
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
@@ -209,7 +206,6 @@ extension ForYouViewController {
                 return AppLayouts.shared.recentlyRegisteredCarouselView()
             }
         }
-        print("flag")
         collectionView.setCollectionViewLayout(layout, animated: true)
     }
 }
