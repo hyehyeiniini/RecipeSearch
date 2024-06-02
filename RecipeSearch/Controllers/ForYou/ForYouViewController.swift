@@ -11,6 +11,10 @@ final class ForYouViewController: UIViewController {
     
     var networkManager = NetworkManager.shared
     
+    var coreDataManager = CoreDataManager.shared
+    
+    var myPicksArray: [Recipes] = []
+    
     var recipesArray: [Recipes] = []
     
     lazy var resultsController = SearchResultViewController()
@@ -41,22 +45,40 @@ final class ForYouViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setupUI()
-        setupData()
+
+        // setupData1()
+        setupData2()
+        
         setupSearchBar()
         setupCollectionView()
         configureCompositionalLayout()
     }
     
-    func setupUI() {
-        view.backgroundColor = .backgroundColor
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupData1()
     }
     
-    func setupData() {
+    func setupUI() {
+        view.backgroundColor = .backgroundColor
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        
+    }
+    
+    func setupData1() {
+        myPicksArray = coreDataManager.coreDataToCustomData()
+        dump(myPicksArray)
+        DispatchQueue.main.async {
+            self.collectionView.reloadSections(IndexSet(integer: 0))
+        }
+    }
+    
+    func setupData2() {
         networkManager.getRecipes(recipeName: nil){ Result in
             if let Result = Result {
                 self.recipesArray = Result
                 DispatchQueue.main.async {
-                    self.collectionView.reloadData()
+                    self.collectionView.reloadSections(IndexSet(integer: 1))
                 }
             }
         }
@@ -70,22 +92,19 @@ final class ForYouViewController: UIViewController {
         // 🍎 2) 서치(결과)컨트롤러의 사용 (복잡한 구현 가능)
         //     ==> 글자마다 검색 기능 + 새로운 화면을 보여주는 것도 가능
         searchController.searchResultsUpdater = self
-        searchController.delegate = self
+        //searchController.delegate = self
 
-        // 첫글자 대문자 설정 없애기
         searchController.searchBar.autocapitalizationType = .none
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.autocorrectionType = .no
+        searchController.searchBar.spellCheckingType = .no
+        
+        resultsController.rootViewController = self
     }
     
     func setupCollectionView() {
         self.view.addSubview(self.collectionView)
         collectionView.setUp(to: view)
-    }
-}
-
-// MARK: - 서치바 탭했을 때 searchResultsController 보여주기
-extension ForYouViewController: UISearchControllerDelegate {
-    func presentSearchController(_ searchController: UISearchController) {
-        searchController.showsSearchResultsController = true
     }
 }
 
@@ -106,7 +125,7 @@ extension ForYouViewController : UICollectionViewDelegate,UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0 :
-            return recipesArray.count // 임시값
+            return myPicksArray.count // 임시값
         case 1 :
             return recipesArray.count
         default:
@@ -121,11 +140,11 @@ extension ForYouViewController : UICollectionViewDelegate,UICollectionViewDataSo
     
     // 섹션의 아이템 셀 전달
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // print(#function)
         switch indexPath.section {
-            
         case 0 :
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.cellIdentifier, for: indexPath) as? MyCollectionViewCell else {fatalError("Unable deque cell...")}
-            cell.imageUrl = recipesArray[indexPath.row].imageUrl
+            cell.imageUrl = myPicksArray[indexPath.row].imageUrl
             return cell
         default:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.cellIdentifier, for: indexPath) as? MyCollectionViewCell else {fatalError("Unable deque cell...")}
@@ -156,7 +175,12 @@ extension ForYouViewController : UICollectionViewDelegate,UICollectionViewDataSo
     // 상세 페이지로 이동
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = DetailViewController()
-        detailVC.recipes = recipesArray[indexPath.row]
+        switch indexPath.section {
+        case 0:
+            detailVC.recipes = myPicksArray[indexPath.row]
+        default:
+            detailVC.recipes = recipesArray[indexPath.row]
+        }
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }

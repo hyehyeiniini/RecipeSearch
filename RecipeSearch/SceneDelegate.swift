@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let nav1 = UINavigationController(rootViewController: firstVC)
         let nav2 = UINavigationController(rootViewController: secondVC)
-        
+
         //뷰컨 타이틀 설정
         nav1.navigationBar.topItem?.title = "Recipes Search"
         nav1.navigationBar.prefersLargeTitles = true
@@ -35,13 +35,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         nav1.tabBarItem = UITabBarItem(title: "For You", image: UIImage(systemName: "heart.text.square.fill"), tag: 0)
         nav2.tabBarItem = UITabBarItem(title: "Recipes", image: UIImage(systemName: "book.closed.fill"), tag: 1)
         
-        
         // tabBarVC.viewControllers = [nav1, nav2]
         tabBarVC.setViewControllers([nav1, nav2], animated: true)
         
         // UI관련 설정
         tabBarVC.tabBar.layer.borderWidth = 0.50
         tabBarVC.tabBar.layer.borderColor = UIColor.systemGray3.cgColor
+        tabBarVC.tabBar.tintColor = .pointColor
         
         window?.rootViewController = tabBarVC
         window?.makeKeyAndVisible()

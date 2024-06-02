@@ -9,9 +9,13 @@ import UIKit
 
 class DetailViewController: UIViewController {
 
+    let coreDataManager = CoreDataManager.shared
+    
     var tableView: UITableView!
     
     var recipes: Recipes?
+    
+    var bookMarked = false
     
     // 네비게이션바에 넣기 위한 버튼
     private lazy var bookMarksButton: UIBarButtonItem = {
@@ -33,8 +37,9 @@ class DetailViewController: UIViewController {
     func setupNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.title = recipes?.recipeName
-        self.navigationController?.navigationBar.tintColor = .pointColor
         navigationItem.rightBarButtonItem = bookMarksButton
+        
+        self.navigationController?.navigationBar.tintColor = .pointColor        
     }
     
     func setupTableView() {
@@ -88,6 +93,13 @@ class DetailViewController: UIViewController {
     
     @objc func bookMarksButtonTapped() {
         print(#function)
+        if !bookMarked {
+            coreDataManager.saveData(recipe: recipes!) {
+                print("코어데이터 저장")
+            }
+            bookMarked.toggle()
+        }
+
     }
 }
 

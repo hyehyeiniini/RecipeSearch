@@ -36,7 +36,7 @@ struct cookRecipes: Codable {
     let totalCount: String
     let info: [[String: String]]?
     let result: Result
-
+    
     enum CodingKeys: String, CodingKey {
         case totalCount = "total_count"
         case info = "row"
@@ -47,7 +47,7 @@ struct cookRecipes: Codable {
 // MARK: - Result
 struct Result: Codable {
     let msg, code: String
-
+    
     enum CodingKeys: String, CodingKey {
         case msg = "MSG"
         case code = "CODE"

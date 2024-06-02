@@ -20,9 +20,10 @@ final class NetworkManager {
         var urlString = "\(RecipesAPI.requestUrl)/COOKRCP01/json/\(RecipesAPI.startIdx)/\(RecipesAPI.endIdx)"
         
         if let recipeName = recipeName {
-            let name = "\"\(recipeName)\""
-            urlString += "/RCP_NM=\(name)"
+            urlString += "/RCP_NM=\(recipeName)"
         }
+
+        
         print(urlString)
 
         AF.request(urlString,

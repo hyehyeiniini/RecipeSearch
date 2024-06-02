@@ -41,6 +41,7 @@ final class MyCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         // 일반적으로 이미지가 바뀌는 것처럼 보이는 현상을 없애기 위해서 실행 ⭐️
+        self.imageUrl = nil
         self.mainImageView.image = nil
     }
     

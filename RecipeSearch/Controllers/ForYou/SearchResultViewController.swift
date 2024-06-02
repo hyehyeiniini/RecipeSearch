@@ -8,7 +8,13 @@
 import UIKit
 
 class SearchResultViewController: UIViewController {
-
+    
+    weak var rootViewController: UIViewController?    
+    
+    // 네트워크 매니저 (싱글톤)
+    let networkManager = NetworkManager.shared
+    
+    
     // 컬렉션뷰
     private lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout.init())
@@ -22,8 +28,6 @@ class SearchResultViewController: UIViewController {
         return view
     }()
     
-    lazy var searchController = UISearchController()
-    
     // (서치바에서) 검색을 위한 단어를 담는 변수 (전화면에서 전달받음)
     var searchTerm: String? {
         didSet {
@@ -31,17 +35,19 @@ class SearchResultViewController: UIViewController {
         }
     }
 
-    // 네트워크 매니저 (싱글톤)
-    let networkManager = NetworkManager.shared
-    
     var recipesArray: [Recipes] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .backgroundColor
+        setupUI()
         setupCollectionView()
     }
 
+    func setupUI() {
+        view.backgroundColor = .backgroundColor
+        rootViewController?.navigationItem.searchController?.hidesNavigationBarDuringPresentation = true
+    }
+    
     func setupCollectionView() {
         view.addSubview(collectionView)
         
@@ -78,6 +84,7 @@ class SearchResultViewController: UIViewController {
     }
     
     func setupData(searchTerm: String?) {
+        print(#function)
         networkManager.getRecipes(recipeName: searchTerm){ Result in
             if let Result = Result {
                 self.recipesArray = Result
@@ -88,15 +95,6 @@ class SearchResultViewController: UIViewController {
         }
     }
     
-}
-
-//MARK: -  🍎 검색하는 동안 (새로운 화면을 보여주는) 복잡한 내용 구현 가능
-extension SearchResultViewController: UISearchResultsUpdating {
-    // 유저가 글자를 입력하는 순간마다 호출되는 메서드 ===> 일반적으로 다른 화면을 보여줄때 구현
-    func updateSearchResults(for searchController: UISearchController) {
-        print("서치바에 입력되는 단어", searchController.searchBar.text ?? "")
-        searchTerm = searchController.searchBar.text ?? ""
-    }
 }
 
 extension SearchResultViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -116,6 +114,6 @@ extension SearchResultViewController: UICollectionViewDataSource, UICollectionVi
         print(#function)
         let detailVC = DetailViewController()
         detailVC.recipes = recipesArray[indexPath.row]
-        present(detailVC, animated: true, completion: nil)
+        rootViewController?.navigationController?.pushViewController(detailVC, animated: true)
     }
 }
