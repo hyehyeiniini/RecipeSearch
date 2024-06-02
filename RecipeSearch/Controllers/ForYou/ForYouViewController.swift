@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ForYouViewController: UIViewController {
     
@@ -147,12 +148,17 @@ extension ForYouViewController : UICollectionViewDelegate, UICollectionViewDataS
             }
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.cellIdentifier, for: indexPath) as? MyCollectionViewCell else {fatalError("Unable deque cell...")}
-            cell.imageUrl = myPicksArray[indexPath.row].imageUrl
+            
+            let imageUrl = myPicksArray[indexPath.row].imageUrl
+            cell.mainImageView.kf.setImage(with: URL(string: imageUrl))
+            
             return cell
             
         default:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.cellIdentifier, for: indexPath) as? MyCollectionViewCell else {fatalError("Unable deque cell...")}
-            cell.imageUrl = recipesArray[indexPath.row].imageUrl
+            let imageUrl = recipesArray[indexPath.row].imageUrl
+            cell.mainImageView.kf.setImage(with: URL(string: imageUrl))
+            
             return cell
         }
     }

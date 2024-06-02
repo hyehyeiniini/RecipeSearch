@@ -11,18 +11,15 @@ final class MyCollectionViewCell: UICollectionViewCell {
     static let cellIdentifier = "MyCollectionViewCell"
     
     // MARK: UI
-    private let mainImageView: UIImageView = {
+    let mainImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 8
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    // 이미지 URL을 전달받는 속성
-    var imageUrl: String? {
-        didSet {
-            loadImage()
-        }
-    }
     
     // MARK: Initializer
     @available(*, unavailable)
@@ -41,7 +38,6 @@ final class MyCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         // 일반적으로 이미지가 바뀌는 것처럼 보이는 현상을 없애기 위해서 실행 ⭐️
-        self.imageUrl = nil
         self.mainImageView.image = nil
     }
     
@@ -54,24 +50,6 @@ final class MyCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    // MARK: - URL ===> 이미지를 셋팅하는 메서드
-    private func loadImage() {
-        guard let urlString = self.imageUrl, let url = URL(string: urlString)  else { return }
-        
-        DispatchQueue.global().async {
-        
-            guard let data = try? Data(contentsOf: url) else { return }
-            // 오래걸리는 작업이 일어나고 있는 동안에 url이 바뀔 가능성 제거 ⭐️⭐️⭐️
-            guard urlString == url.absoluteString else { return }
-            
-            DispatchQueue.main.async {
-                self.mainImageView.image = UIImage(data: data)
-                self.mainImageView.contentMode = .scaleAspectFill
-                self.mainImageView.layer.cornerRadius = 8
-                self.mainImageView.clipsToBounds = true
-            }
-        }
-    }
 }
 
 

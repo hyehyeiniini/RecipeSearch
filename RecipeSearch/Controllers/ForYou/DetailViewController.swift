@@ -47,7 +47,7 @@ class DetailViewController: UIViewController {
     }
     
     func updateRightBarButton(bookMarked: Bool) {
-        let button = UIButton(frame: CGRectMake(0,0,30,30))
+        let button = UIButton(frame: CGRectMake(0,0,40,40))
         button.addTarget(self, action: #selector(bookMarksButtonTapped), for: .touchUpInside)
 
         switch bookMarked {

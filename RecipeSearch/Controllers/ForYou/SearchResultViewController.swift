@@ -104,7 +104,8 @@ extension SearchResultViewController: UICollectionViewDataSource, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.cellIdentifier, for: indexPath) as! MyCollectionViewCell
-        cell.imageUrl = recipesArray[indexPath.item].imageUrl
+        let imageUrl = recipesArray[indexPath.item].imageUrl
+        cell.mainImageView.kf.setImage(with: URL(string: imageUrl))
         
         return cell
     }
