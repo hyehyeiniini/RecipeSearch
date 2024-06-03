@@ -7,13 +7,13 @@
 
 import UIKit
 
-class DividerFooterView: UICollectionReusableView {
+final class DividerFooterView: UICollectionReusableView {
     
     //MARK: Properties
     
     static let footerIdentifier = "DividerFooterView"
     
-    lazy var footer: UIView = {
+    private let footer: UIView = {
         let f = UIView()
         f.translatesAutoresizingMaskIntoConstraints = false
         f.backgroundColor = .black.withAlphaComponent(0.1)

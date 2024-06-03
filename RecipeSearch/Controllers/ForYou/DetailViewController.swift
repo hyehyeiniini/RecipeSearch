@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class DetailViewController: UIViewController {
 
@@ -75,7 +76,9 @@ class DetailViewController: UIViewController {
         
         // 헤더 뷰 등록(레시피 사진)
         let tableViewHeader = TableViewHeader(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 400))
-        tableViewHeader.imageUrl = recipes?.imageUrl
+        guard let imageUrl = recipes?.imageUrl else { return }
+        tableViewHeader.mainImageView.kf.setImage(with: URL(string: imageUrl))
+    
         self.tableView.tableHeaderView = tableViewHeader
         if #available(iOS 15.0, *) {tableView.sectionHeaderTopPadding = 0.0}
         

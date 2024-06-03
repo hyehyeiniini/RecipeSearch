@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         //뷰컨 타이틀 설정
         nav1.navigationBar.topItem?.title = "Recipes Search"
         nav1.navigationBar.prefersLargeTitles = true
-        nav2.navigationBar.topItem?.title = "Recipes"
+        nav2.navigationBar.topItem?.title = "My Picks"
         nav2.navigationBar.prefersLargeTitles = true
         
         // 탭바아이템 설정

@@ -11,7 +11,7 @@ final class NutritionInfoTableViewCell: UITableViewCell {
     
     var info: [String]? {
         didSet {
-            guard var info = info else { return }
+            guard let info = info else { return }
             calValLabel.text = String(info[0])
             carValLabel.text = String(info[1])
             proValLabel.text = String(info[2])

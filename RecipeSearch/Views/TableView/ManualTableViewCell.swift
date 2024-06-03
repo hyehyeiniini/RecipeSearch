@@ -6,16 +6,15 @@
 //
 
 import UIKit
+import Kingfisher
 
 class ManualTableViewCell: UITableViewCell {
 
     var manual: Manual? {
         didSet{
-            DispatchQueue.main.async { [self] in
-                guard let manual = manual else { return }
-                numberImageView.image = UIImage(systemName: "\(manual.manualNum).circle.fill")?.withTintColor(.pointColor, renderingMode: .alwaysOriginal)
-                descriptionImageView.downloadImage(from: manual.manualUrl)
-            }
+            guard let manual = manual else { return }
+            numberImageView.image = UIImage(systemName: "\(manual.manualNum).circle.fill")?.withTintColor(.pointColor, renderingMode: .alwaysOriginal)
+            descriptionImageView.kf.setImage(with: URL(string: manual.manualUrl))
         }
     }
     

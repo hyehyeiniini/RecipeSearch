@@ -24,6 +24,14 @@ class RecipesViewController: UIViewController {
         view.backgroundColor = .backgroundColor
     }
     
+    // MARK: - ColletionView Data Setup
+    func setupData1() {
+        myPicksArray = coreDataManager.coreDataToCustomData()
+//        DispatchQueue.main.async {
+//            self.collectionView.reloadSections(IndexSet(integer: 0))
+//        }
+    }
+    
     func setupTableView() {
         self.tableView = UITableView()
         view.addSubview(tableView)
@@ -36,7 +44,7 @@ class RecipesViewController: UIViewController {
         // self.tableView.delegate = self
         
         // 셀 등록
-        self.tableView.register(NutritionInfoTableViewCell.self, forCellReuseIdentifier: "NutritionInfoTableViewCell")
+        self.tableView.register(RecipeTableViewCell.self, forCellReuseIdentifier: "RecipeTableViewCell")
 
         // 테이블 뷰 오토레이아웃
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,7 +53,6 @@ class RecipesViewController: UIViewController {
             self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor),
             self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-
         ])
     }
 
@@ -60,7 +67,7 @@ extension RecipesViewController: UITableViewDataSource {
     
     // 각 섹션-셀 별 cell 지정
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCellTableViewCell", for: indexPath) as! IngredientCellTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeTableViewCell", for: indexPath) as! RecipeTableViewCell
         
         // cell.descriptionLabel.text = recipes?.ingredient
         cell.selectionStyle = .none

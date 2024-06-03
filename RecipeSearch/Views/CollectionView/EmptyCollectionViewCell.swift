@@ -7,11 +7,11 @@
 
 import UIKit
 
-class EmptyCollectionViewCell: UICollectionViewCell {
+final class EmptyCollectionViewCell: UICollectionViewCell {
     
     static let cellIdentifier = "EmptyCollectionViewCell"
     
-    let emptyView: UIView = {
+    private let emptyView: UIView = {
         let view = UIView()
         view.backgroundColor = .black.withAlphaComponent(0.05)
         view.clipsToBounds = true
@@ -20,14 +20,14 @@ class EmptyCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    let infoImageView: UIImageView = {
+    private let infoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(systemName: "info.circle.fill")?.withTintColor(.pointColor, renderingMode: .alwaysOriginal)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    let titleLabel: UILabel = {
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "레시피를 추가해 보세요."
         label.textColor = .darkGray
@@ -36,7 +36,7 @@ class EmptyCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let messageLabel: UILabel = {
+    private let messageLabel: UILabel = {
         let label = UILabel()
         label.text = "추가한 레시피들이 화면에 나타납니다."
         label.textColor = .lightGray
