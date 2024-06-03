@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         nav1.navigationBar.topItem?.title = "Recipes Search"
         nav1.navigationBar.prefersLargeTitles = true
         nav2.navigationBar.topItem?.title = "My Picks"
-        nav2.navigationBar.prefersLargeTitles = true
+        nav2.navigationBar.prefersLargeTitles = false
         
         // 탭바아이템 설정
         nav1.tabBarItem = UITabBarItem(title: "For You", image: UIImage(systemName: "heart.text.square.fill"), tag: 0)

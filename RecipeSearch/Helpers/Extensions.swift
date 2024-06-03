@@ -10,6 +10,7 @@ import UIKit
 extension UIColor {
     static let backgroundColor = UIColor(red: 0.99, green: 0.98, blue: 0.96, alpha: 1.00)
     static let pointColor = UIColor(red: 0.26, green: 0.67, blue: 0.04, alpha: 1.00)
+    static let darkColor = UIColor(red: 0.19, green: 0.50, blue: 0.02, alpha: 1.00)
 }
 
 extension UIFont {

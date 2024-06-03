@@ -30,6 +30,11 @@ final class DetailViewController: UIViewController {
         setupTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setBookmarkFlag()
+    }
+    
     func setupUI() {
         view.backgroundColor = .backgroundColor
     }
@@ -39,7 +44,7 @@ final class DetailViewController: UIViewController {
         navigationItem.title = recipes?.recipeName
         self.navigationController?.navigationBar.tintColor = .pointColor      
         
-        setBookmarkFlag()
+        // setBookmarkFlag()
     }
     
     func setBookmarkFlag() {

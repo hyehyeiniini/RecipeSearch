@@ -88,8 +88,6 @@
 		839E8B8B2C01B00600D03459 = {
 			isa = PBXGroup;
 			children = (
-				831049E82C0B05E6008F4A3D /* RecipeData+CoreDataClass.swift */,
-				839E8BF22C0B059E00D03459 /* RecipeData+CoreDataProperties.swift */,
 				839E8B962C01B00600D03459 /* RecipeSearch */,
 				839E8B952C01B00600D03459 /* Products */,
 				C6E2F2FA3A614CA3335CCB06 /* Pods */,
@@ -108,7 +106,6 @@
 		839E8B962C01B00600D03459 /* RecipeSearch */ = {
 			isa = PBXGroup;
 			children = (
-				839E8BEF2C0B056000D03459 /* Model.xcdatamodeld */,
 				839E8B972C01B00600D03459 /* AppDelegate.swift */,
 				839E8B992C01B00600D03459 /* SceneDelegate.swift */,
 				839E8BAB2C01B0CF00D03459 /* Models */,
@@ -125,6 +122,9 @@
 		839E8BAB2C01B0CF00D03459 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				839E8BEF2C0B056000D03459 /* Model.xcdatamodeld */,
+				831049E82C0B05E6008F4A3D /* RecipeData+CoreDataClass.swift */,
+				839E8BF22C0B059E00D03459 /* RecipeData+CoreDataProperties.swift */,
 				839E8BBB2C02050000D03459 /* Recipes.swift */,
 				839E8BBD2C02099900D03459 /* NetworkManager.swift */,
 				839E8BDD2C06E95600D03459 /* CoreDataManger.swift */,
@@ -589,8 +589,7 @@
 				839E8BF02C0B056000D03459 /* Model.xcdatamodel */,
 			);
 			currentVersion = 839E8BF02C0B056000D03459 /* Model.xcdatamodel */;
-			name = Model.xcdatamodeld;
-			path = "/Users/Chris/Documents/programming/app_study/Allen_AppSchool/App_practice/스터디/RecipeSearch/RecipeSearch/Model.xcdatamodeld";
+			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
