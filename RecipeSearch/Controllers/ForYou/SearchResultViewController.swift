@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchResultViewController: UIViewController {
+final class SearchResultViewController: UIViewController {
     
     weak var rootViewController: UIViewController?    
     

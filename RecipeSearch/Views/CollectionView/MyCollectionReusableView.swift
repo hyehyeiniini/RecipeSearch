@@ -7,24 +7,24 @@
 
 import UIKit
 
-class MyCollectionReusableView: UICollectionReusableView {
+final class MyCollectionReusableView: UICollectionReusableView {
     
     static let headerIdentifier = "MyCollectionReusableView"
     
-    private lazy var label: UILabel = {
+    private let label: UILabel = {
         let label = UILabel()
         label.text = "Header"
         label.font = UIFont.subtitleFont
         label.textColor = .black
         label.backgroundColor = .clear
         label.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(label)
+        
         return label
       }()
       
       override init(frame: CGRect) {
         super.init(frame: frame)
-
+        self.addSubview(label)
         NSLayoutConstraint.activate([
           self.label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
           self.label.leadingAnchor.constraint(equalTo: self.leadingAnchor)

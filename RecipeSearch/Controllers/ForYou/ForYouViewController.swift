@@ -10,8 +10,8 @@ import Kingfisher
 
 final class ForYouViewController: UIViewController {
     
-    var networkManager = NetworkManager.shared
-    var coreDataManager = CoreDataManager.shared
+    let networkManager = NetworkManager.shared
+    let coreDataManager = CoreDataManager.shared
     
     var myPicksArray: [Recipes] = []
     var recipesArray: [Recipes] = []

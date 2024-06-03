@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 
-class DetailViewController: UIViewController {
+final class DetailViewController: UIViewController {
 
     let coreDataManager = CoreDataManager.shared
     
@@ -164,7 +164,6 @@ extension DetailViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ManualTableViewCell", for: indexPath) as! ManualTableViewCell
             
             cell.manual = recipes?.manualArray[indexPath.row]
-            cell.descriptionLabel.text = recipes?.manualArray[indexPath.row].manualStr
             cell.selectionStyle = .none
             
             return cell

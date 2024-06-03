@@ -7,7 +7,7 @@
 
 import UIKit
 
-class IngredientCellTableViewCell: UITableViewCell {
+final class IngredientCellTableViewCell: UITableViewCell {
 
     var descriptionLabel: UILabel = {
         let label = UILabel()

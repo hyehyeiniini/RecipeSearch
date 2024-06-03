@@ -8,22 +8,23 @@
 import UIKit
 import Kingfisher
 
-class ManualTableViewCell: UITableViewCell {
+final class ManualTableViewCell: UITableViewCell {
 
     var manual: Manual? {
         didSet{
             guard let manual = manual else { return }
             numberImageView.image = UIImage(systemName: "\(manual.manualNum).circle.fill")?.withTintColor(.pointColor, renderingMode: .alwaysOriginal)
             descriptionImageView.kf.setImage(with: URL(string: manual.manualUrl))
+            descriptionLabel.text = manual.manualStr
         }
     }
     
-    var numberImageView: UIImageView = {
+    private let numberImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
     }()
     
-    var descriptionLabel: UILabel = {
+    private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .detailFont
         label.textColor = .black
@@ -32,7 +33,7 @@ class ManualTableViewCell: UITableViewCell {
         return label
     }()
     
-    var descriptionImageView: UIImageView = {
+    private let descriptionImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 5

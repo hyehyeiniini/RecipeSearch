@@ -7,9 +7,9 @@
 
 import UIKit
 
-class RecipesViewController: UIViewController {
+final class RecipesViewController: UIViewController {
 
-    var coreDataManager = CoreDataManager.shared
+    let coreDataManager = CoreDataManager.shared
     
     var tableView: UITableView!
     

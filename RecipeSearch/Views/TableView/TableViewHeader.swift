@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TableViewHeader: UIView {
+final class TableViewHeader: UIView {
 
     let mainImageView: UIImageView = {
         let imageView = UIImageView()
