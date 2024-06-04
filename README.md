@@ -13,7 +13,7 @@
 
 | 시작 화면 | TypeScript |  React   |  Node   |
 | :--------: | :--------: | :------: | :-----: |
-|   ![js]    |   ![ts]    | ![react] | ![node] |
+|       |   ![ts]    | ![react] | ![node] |
 
 <br>
 
@@ -31,14 +31,10 @@
 
 ## 배운 점 & 아쉬운 점
 
-<p align="justify">
-
-</p>
-
-<br>
+* 코어데이터를 정렬하는 기능 추가해야 함
 
 
 <!-- Stack Icon Refernces -->
 
-[js]: /images/stack/javascript.svg
+[a]: /images/first_screen.png
 
