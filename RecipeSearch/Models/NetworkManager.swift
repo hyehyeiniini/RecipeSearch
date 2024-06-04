@@ -17,22 +17,22 @@ final class NetworkManager {
     private init() {}
     
     func getRecipes(recipeName: String?, completion: @escaping ([Recipes]?) -> Void) {
+        print(#function)
         var urlString = "\(RecipesAPI.requestUrl)/COOKRCP01/json/\(RecipesAPI.startIdx)/\(RecipesAPI.endIdx)"
-        
         if let recipeName = recipeName {
             urlString += "/RCP_NM=\(recipeName)"
         }
 
-        
         print(urlString)
-
-        AF.request(urlString,
-                   method: .post,
+        AF.request(urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "",
+                   method: .get,
                    parameters: nil,
                    encoding: JSONEncoding.default, // 요청 본문을 json 형식으로 변환
                    headers: ["Content-Type":"application/json", "Accept":"application/json"],
                    interceptor: nil,
                    requestModifier: nil).validate(statusCode: 200..<600).response { [weak self] response in
+            
+            var jsonFlag = ""
             
             switch response.result {
             case .success(let data): // 응답에 성공하면
@@ -40,12 +40,13 @@ final class NetworkManager {
                 
                 do {
                     guard let prettyJson = NSString(data: data, encoding: String.Encoding.utf8.rawValue) else { return }
-                    // print("get Json : \(prettyJson)")
+                    jsonFlag = prettyJson as String
                     let parsedData = try JSONDecoder().decode(apiData.self, from: data) // 응답 데이터를 ProfileData(json -> quicktype.io로 변환한 구조체)로 디코드
                     let decodedData = self?.recipesDataManufacturing(parsedData: parsedData)
                     completion(decodedData)
                 } catch {
                     print("파싱 에러 : \(error)")
+                    print(jsonFlag)
                     completion(nil)
                 }
             case .failure(let error): // 응답에 실패하면

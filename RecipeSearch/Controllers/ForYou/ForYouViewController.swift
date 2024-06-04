@@ -110,7 +110,7 @@ final class ForYouViewController: UIViewController {
 extension ForYouViewController: UISearchResultsUpdating {
     // 유저가 글자를 입력하는 순간마다 호출되는 메서드 ===> 일반적으로 다른 화면을 보여줄때 구현
     func updateSearchResults(for searchController: UISearchController) {
-        print("서치바에 입력되는 단어", searchController.searchBar.text ?? "")
+        // print("서치바에 입력되는 단어", searchController.searchBar.text ?? "")
         let vc = searchController.searchResultsController as! SearchResultViewController
         // 컬렉션뷰에 찾으려는 단어 전달
         vc.searchTerm = searchController.searchBar.text ?? ""

@@ -31,7 +31,7 @@ final class SearchResultViewController: UIViewController {
     // (서치바에서) 검색을 위한 단어를 담는 변수 (전화면에서 전달받음)
     var searchTerm: String? {
         didSet {
-            setupData(searchTerm: searchTerm)
+            setupData()
         }
     }
 
@@ -83,8 +83,9 @@ final class SearchResultViewController: UIViewController {
         
     }
     
-    func setupData(searchTerm: String?) {
-        print(#function)
+    func setupData() {
+        print("서치바에 입력되는 단어", searchTerm ?? "")
+        if searchTerm == "" { return }
         networkManager.getRecipes(recipeName: searchTerm){ Result in
             if let Result = Result {
                 self.recipesArray = Result
