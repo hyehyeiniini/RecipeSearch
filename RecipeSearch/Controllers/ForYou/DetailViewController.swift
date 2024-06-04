@@ -41,8 +41,8 @@ final class DetailViewController: UIViewController {
     
     func setupNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
-        navigationItem.title = recipes?.recipeName
-        self.navigationController?.navigationBar.tintColor = .pointColor      
+        // navigationItem.title = recipes?.recipeName
+        self.navigationController?.navigationBar.tintColor = .pointColor
         
         // setBookmarkFlag()
     }
@@ -83,7 +83,7 @@ final class DetailViewController: UIViewController {
         let tableViewHeader = TableViewHeader(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 400))
         guard let imageUrl = recipes?.imageUrl else { return }
         tableViewHeader.mainImageView.kf.setImage(with: URL(string: imageUrl))
-    
+        tableViewHeader.recipeNameLabel.text = recipes?.recipeName
         self.tableView.tableHeaderView = tableViewHeader
         if #available(iOS 15.0, *) {tableView.sectionHeaderTopPadding = 0.0}
         
@@ -91,7 +91,6 @@ final class DetailViewController: UIViewController {
         let tableViewFooter = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 100))
         tableViewFooter.backgroundColor = .clear
         self.tableView.tableFooterView = tableViewFooter
-        
         
         // 셀 등록
         self.tableView.register(NutritionInfoTableViewCell.self, forCellReuseIdentifier: "NutritionInfoTableViewCell")
@@ -114,6 +113,12 @@ final class DetailViewController: UIViewController {
         } else {
             self.automaticallyAdjustsScrollViewInsets = false
         }
+        
+        // Section 간격
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 10
+        }
+        tableView.separatorStyle = .none
     }
     
     @objc func bookMarksButtonTapped() {

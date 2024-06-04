@@ -151,14 +151,18 @@ extension ForYouViewController : UICollectionViewDelegate, UICollectionViewDataS
             
             let imageUrl = myPicksArray[indexPath.row].imageUrl
             cell.mainImageView.kf.setImage(with: URL(string: imageUrl))
-            
+            cell.recipeNameLabel.text = myPicksArray[indexPath.row].recipeName
+            cell.setupGradient()
+            cell.setupShadow()
             return cell
             
         default:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MyCollectionViewCell.cellIdentifier, for: indexPath) as? MyCollectionViewCell else {fatalError("Unable deque cell...")}
             let imageUrl = recipesArray[indexPath.row].imageUrl
             cell.mainImageView.kf.setImage(with: URL(string: imageUrl))
-            
+            cell.recipeNameLabel.text = recipesArray[indexPath.row].recipeName
+            cell.setupGradient()
+            cell.setupShadow()
             return cell
         }
     }
