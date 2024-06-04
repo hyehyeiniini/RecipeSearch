@@ -38,10 +38,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // tabBarVC.viewControllers = [nav1, nav2]
         tabBarVC.setViewControllers([nav1, nav2], animated: true)
         
-        // UI관련 설정
+        // 탭바 UI관련 설정
         tabBarVC.tabBar.layer.borderWidth = 0.50
         tabBarVC.tabBar.layer.borderColor = UIColor.systemGray3.cgColor
         tabBarVC.tabBar.tintColor = .pointColor
+        
+        // 네비게이션 바 UI관련 설정
+        nav1.navigationBar.tintColor = .pointColor
+        nav2.navigationBar.tintColor = .pointColor
         
         window?.rootViewController = tabBarVC
         window?.makeKeyAndVisible()

@@ -16,11 +16,11 @@ final class NetworkManager {
     // 여러객체를 추가적으로 생성하지 못하도록 설정
     private init() {}
     
-    func getRecipes(recipeName: String?, completion: @escaping ([Recipes]?) -> Void) {
+    func getRecipes(param: String?, completion: @escaping ([Recipes]?) -> Void) {
         print(#function)
         var urlString = "\(RecipesAPI.requestUrl)/COOKRCP01/json/\(RecipesAPI.startIdx)/\(RecipesAPI.endIdx)"
-        if let recipeName = recipeName {
-            urlString += "/RCP_NM=\(recipeName)"
+        if let param = param {
+            urlString += "/\(param)"
         }
 
         print(urlString)

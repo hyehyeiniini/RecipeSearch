@@ -9,11 +9,13 @@ import UIKit
 
 final class SearchResultViewController: UIViewController {
     
-    weak var rootViewController: UIViewController?    
+    var delegate: SearchResultViewControllerDelegate?
     
     // 네트워크 매니저 (싱글톤)
     let networkManager = NetworkManager.shared
     
+    var stackView: UIStackView!
+    var recipeWayButtons: [UIButton] = []
     
     // 컬렉션뷰
     private lazy var collectionView: UICollectionView = {
@@ -31,21 +33,53 @@ final class SearchResultViewController: UIViewController {
     // (서치바에서) 검색을 위한 단어를 담는 변수 (전화면에서 전달받음)
     var searchTerm: String? {
         didSet {
-            setupData()
+            setupData(searchTerm: searchTerm)
         }
     }
 
     var recipesArray: [Recipes] = []
     
+    // MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupButtons()
         setupCollectionView()
     }
 
     func setupUI() {
         view.backgroundColor = .backgroundColor
-        rootViewController?.navigationItem.searchController?.hidesNavigationBarDuringPresentation = true
+        delegate?.hideNavigationBar()
+    }
+    
+    func setupButtons() {
+        let buttonTitles = ["밥", "반찬", "국&찌개", "후식", "기타"]
+        buttonTitles.forEach {
+            let button = UIButton()
+            button.setTitle($0, for: .normal)
+            button.setTitle($0, for: .selected)
+
+            button.setTitleColor(.orange, for: .normal)
+            button.setTitleColor(.pointColor, for: .selected)
+            
+            button.titleLabel?.font = .systemFont(ofSize: 13)
+            button.backgroundColor = .white
+            button.layer.borderWidth = 1
+            button.layer.borderColor = UIColor.orange.cgColor
+            button.clipsToBounds = true
+            button.layer.cornerRadius = 14
+            button.isSelected = false
+            button.addTarget(self, action: #selector(recipeWayButtonsSelected), for: .touchUpInside)
+            recipeWayButtons.append(button)
+        }
+        
+        stackView = UIStackView(arrangedSubviews: recipeWayButtons)
+        view.addSubview(stackView)
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        stackView.distribution = .fillProportionally
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
     }
     
     func setupCollectionView() {
@@ -75,7 +109,11 @@ final class SearchResultViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
     
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            stackView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            
+            collectionView.topAnchor.constraint(equalTo: self.stackView.bottomAnchor, constant: 10),
             collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
@@ -83,10 +121,10 @@ final class SearchResultViewController: UIViewController {
         
     }
     
-    func setupData() {
+    func setupData(searchTerm: String?) {
         print("서치바에 입력되는 단어", searchTerm ?? "")
-        if searchTerm == "" { return }
-        networkManager.getRecipes(recipeName: searchTerm){ Result in
+        let param = "\(searchTerm ?? "")"
+        networkManager.getRecipes(param: param){ Result in
             if let Result = Result {
                 self.recipesArray = Result
                 DispatchQueue.main.async {
@@ -94,6 +132,40 @@ final class SearchResultViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func clearData() {
+        recipesArray = []
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func initButton() {
+        for button in recipeWayButtons {
+            button.isSelected = false
+            button.layer.borderColor = UIColor.orange.cgColor
+        }
+    }
+    
+    @objc func recipeWayButtonsSelected(_ sender: UIButton) {
+        // 선택한 버튼이면 초기화
+        if sender.isSelected {
+            sender.isSelected.toggle()
+            sender.layer.borderColor = UIColor.orange.cgColor
+            clearData()
+            return
+        }
+        else {
+            delegate?.recipeWaySearch(recipeWay: sender.titleLabel?.text)
+            for button in recipeWayButtons {
+                button.isSelected = false
+                button.layer.borderColor = UIColor.orange.cgColor
+            }
+            sender.isSelected = true
+            sender.layer.borderColor = UIColor.pointColor.cgColor
+        }
+
     }
     
 }
@@ -117,6 +189,14 @@ extension SearchResultViewController: UICollectionViewDataSource, UICollectionVi
         print(#function)
         let detailVC = DetailViewController()
         detailVC.recipes = recipesArray[indexPath.row]
-        rootViewController?.navigationController?.pushViewController(detailVC, animated: true)
+        delegate?.pushViewController(detailVC, animated: true)
     }
+}
+
+protocol SearchResultViewControllerDelegate {
+    func recipeWaySearch(recipeWay: String?)
+    
+    func pushViewController(_ viewController: UIViewController, animated: Bool)
+    
+    func hideNavigationBar() 
 }

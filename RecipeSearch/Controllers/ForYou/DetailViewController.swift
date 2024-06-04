@@ -42,7 +42,6 @@ final class DetailViewController: UIViewController {
     func setupNavigationBar() {
         navigationItem.largeTitleDisplayMode = .never
         // navigationItem.title = recipes?.recipeName
-        self.navigationController?.navigationBar.tintColor = .pointColor
         
         // setBookmarkFlag()
     }

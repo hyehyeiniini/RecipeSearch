@@ -18,7 +18,7 @@ public struct CVCell {
 public enum RecipesAPI {
     static let requestUrl = "http://openapi.foodsafetykorea.go.kr/api/cc2a29a01cf74b5db292"
     static let startIdx = 1
-    static let endIdx = 5
+    static let endIdx = 50
     
 }
 

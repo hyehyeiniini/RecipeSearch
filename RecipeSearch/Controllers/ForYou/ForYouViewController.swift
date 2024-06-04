@@ -72,13 +72,13 @@ final class ForYouViewController: UIViewController {
         // 🍎 2) 서치(결과)컨트롤러의 사용 (복잡한 구현 가능)
         //     ==> 글자마다 검색 기능 + 새로운 화면을 보여주는 것도 가능
         searchController.searchResultsUpdater = self
-
+        
         searchController.searchBar.autocapitalizationType = .none
-        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.autocorrectionType = .no
         searchController.searchBar.spellCheckingType = .no
-        
-        resultsController.rootViewController = self
+        searchController.hidesNavigationBarDuringPresentation = false
+
+        resultsController.delegate = self
     }
     
     // MARK: - ColletionView Data Setup
@@ -90,7 +90,7 @@ final class ForYouViewController: UIViewController {
     }
     
     func setupData2() {
-        networkManager.getRecipes(recipeName: nil){ Result in
+        networkManager.getRecipes(param: nil){ Result in
             if let Result = Result {
                 self.recipesArray = Result
                 DispatchQueue.main.async {
@@ -110,10 +110,40 @@ final class ForYouViewController: UIViewController {
 extension ForYouViewController: UISearchResultsUpdating {
     // 유저가 글자를 입력하는 순간마다 호출되는 메서드 ===> 일반적으로 다른 화면을 보여줄때 구현
     func updateSearchResults(for searchController: UISearchController) {
-        // print("서치바에 입력되는 단어", searchController.searchBar.text ?? "")
+        
+        if searchController.searchResultsController!.view.isHidden {
+            // 서치컨트롤러 바로 보이게
+            searchController.searchResultsController?.view.isHidden = false
+            return
+        }
+        
+        let vc = searchController.searchResultsController as! SearchResultViewController
+        
+        // 여기서 버튼 숨기기?
+        vc.initButton()
+        
+        // 컬렉션뷰에 찾으려는 단어 전달
+        let searchTerm = "RCP_NM=\(searchController.searchBar.text ?? "")"
+        vc.searchTerm = searchTerm
+        
+    }
+    
+}
+
+extension ForYouViewController: SearchResultViewControllerDelegate {
+    func hideNavigationBar() {
+        navigationItem.searchController?.hidesNavigationBarDuringPresentation = true
+    }
+    
+    func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        navigationController?.pushViewController(viewController, animated: animated)
+    }
+    
+    func recipeWaySearch(recipeWay: String?) {
         let vc = searchController.searchResultsController as! SearchResultViewController
         // 컬렉션뷰에 찾으려는 단어 전달
-        vc.searchTerm = searchController.searchBar.text ?? ""
+        searchController.searchBar.text = nil
+        vc.searchTerm = "RCP_PAT2=\(recipeWay ?? "")"
     }
 }
 

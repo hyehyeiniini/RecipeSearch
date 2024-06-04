@@ -40,7 +40,6 @@ final class RecipesViewController: UIViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target: nil, action: nil)
         
         let rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editButtonTapped))
-        rightBarButtonItem.tintColor = .pointColor
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
         
     }
