@@ -11,10 +11,13 @@
 
 ## 구현 화면
 
-| 시작 화면 | TypeScript |  React   |  Node   |
-| :--------: | :--------: | :------: | :-----: |
-|       |   ![ts]    | ![react] | ![node] |
+|   시작 화면  |   검색 화면  |  카테고리 별 분류  |
+| :--------: | :--------: | :----------:  |
+|    ![a]    |   ![b]    |     ![c]      | 
 
+|   북마크 기능  |  상세 화면  |  북마크 리스트  |
+| :--------: | :--------: | :----------:  |
+|    ![d]    |   ![e]    |     ![f]      | 
 <br>
 
 ## 구현 기능
@@ -36,5 +39,9 @@
 
 <!-- Stack Icon Refernces -->
 
-[a]: /images/first_screen.png
-
+[a]: /images/first_screen.gif
+[b]: /images/search.gif
+[c]: /images/category_search.gif
+[d]: /images/bookmark.gif
+[e]: /images/detail_screen.gif
+[f]: /images/Foryou_tap.gif
