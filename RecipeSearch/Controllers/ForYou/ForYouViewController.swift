@@ -120,12 +120,12 @@ extension ForYouViewController: UISearchResultsUpdating {
         let vc = searchController.searchResultsController as! SearchResultViewController
         
         // 여기서 버튼 숨기기?
+        
         vc.initButton()
         
         // 컬렉션뷰에 찾으려는 단어 전달
         let searchTerm = "RCP_NM=\(searchController.searchBar.text ?? "")"
         vc.searchTerm = searchTerm
-        
     }
     
 }
