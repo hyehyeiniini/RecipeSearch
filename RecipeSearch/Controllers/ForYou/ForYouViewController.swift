@@ -110,17 +110,14 @@ final class ForYouViewController: UIViewController {
 extension ForYouViewController: UISearchResultsUpdating {
     // 유저가 글자를 입력하는 순간마다 호출되는 메서드 ===> 일반적으로 다른 화면을 보여줄때 구현
     func updateSearchResults(for searchController: UISearchController) {
-        
+        // 서치컨트롤러 바로 보이게
         if searchController.searchResultsController!.view.isHidden {
-            // 서치컨트롤러 바로 보이게
             searchController.searchResultsController?.view.isHidden = false
             return
         }
         
         let vc = searchController.searchResultsController as! SearchResultViewController
-        
-        // 여기서 버튼 숨기기?
-        
+        // 버튼 UI 초기화
         vc.initButton()
         
         // 컬렉션뷰에 찾으려는 단어 전달
