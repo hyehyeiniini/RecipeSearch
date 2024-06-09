@@ -3,7 +3,7 @@
 
 
 ## 프로젝트 소개
-스위프트 스터디원이 발제한 어플(명세서는 [여기](https://www.notion.so/Recipe-Search-4bf5e3f3008647228ed7f9cf00a05f75?pvs=4))을 토대로 약 2주간 진행한 개인 프로젝트
+스위프트 스터디원이 발제한 어플(명세서는 [여기](https://confusion-tip-e6c.notion.site/Recipe-Search-4bf5e3f3008647228ed7f9cf00a05f75))을 토대로 약 2주간 진행한 개인 프로젝트
 
 ## 기술 스택
 ![Static Badge](https://img.shields.io/badge/Swift-orange?logo=swift&logoColor=white)
